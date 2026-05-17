@@ -50,6 +50,8 @@ map.on('load', async () => {
   let stations = [];
   try {
     stations = await d3.json('https://dsc106.com/labs/lab07/data/bluebikes-stations.json');
+    stations = stations.data.stations; // 👈 drill into the nested structure
+    console.log('First station:', stations[0]); // verify it now shows a station object
     console.log('Loaded JSON Data:', stations);
   } catch (error) {
     console.error('Error loading JSON:', error);
