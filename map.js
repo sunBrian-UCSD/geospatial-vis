@@ -12,7 +12,6 @@ const map = new mapboxgl.Map({
   maxZoom: 18,
 });
 
-// ✅ defined globally
 const svg = d3.select('#map').select('svg');
 
 function getCoords(station) {
@@ -47,7 +46,7 @@ map.on('load', async () => {
     paint: { 'line-color': 'green', 'line-width': 3, 'line-opacity': 0.4 },
   });
 
-  // ✅ fetch data correctly - no redeclaration inside try
+  // Fetch station data
   let stations = [];
   try {
     stations = await d3.json('https://dsc106.com/labs/lab07/data/bluebikes-stations.json');
@@ -56,13 +55,45 @@ map.on('load', async () => {
     console.error('Error loading JSON:', error);
   }
 
+  // Fetch trip data
+  const trips = await d3.csv('https://dsc106.com/labs/lab07/data/bluebikes-traffic-2024-03.csv');
+  console.log('Loaded trips:', trips[0]);
+
+  // Calculate departures and arrivals
+  const departures = d3.rollup(
+    trips,
+    (v) => v.length,
+    (d) => d.start_station_id,
+  );
+
+  const arrivals = d3.rollup(
+    trips,
+    (v) => v.length,
+    (d) => d.end_station_id,
+  );
+
+  // Add traffic properties to each station
+  stations = stations.map((station) => {
+    let id = station.short_name;
+    station.arrivals = arrivals.get(id) ?? 0;
+    station.departures = departures.get(id) ?? 0;
+    station.totalTraffic = station.arrivals + station.departures;
+    return station;
+  });
+  console.log('Stations with traffic:', stations[0]);
+
+  // Scale radius by total traffic
+  const radiusScale = d3.scaleSqrt()
+    .domain([0, d3.max(stations, (d) => d.totalTraffic)])
+    .range([0, 25]);
+
   // Append circles
   const circles = svg
     .selectAll('circle')
     .data(stations)
     .enter()
     .append('circle')
-    .attr('r', 5)
+    .attr('r', (d) => radiusScale(d.totalTraffic))
     .attr('fill', 'steelblue')
     .attr('stroke', 'white')
     .attr('stroke-width', 1)
