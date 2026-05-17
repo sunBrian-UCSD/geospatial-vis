@@ -3,6 +3,13 @@ import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiYnJzdW4iLCJhIjoiY21wOTV5aXU2MGVsNzJycHozc3lmMTY5eCJ9.dfPg3KyLFKfmjd0stuYBnA';
 
+let timeFilter = -1;
+
+function formatTime(minutes) {
+	const date = new Date(0, 0, 0, 0, minutes);
+	return date.toLocaleString('en-US', { timeStyle: 'short' });
+}
+
 const map = new mapboxgl.Map({
 	container: 'map',
 	style: 'mapbox://styles/mapbox/streets-v12',
@@ -36,9 +43,6 @@ timeFilter.addEventListener('input', () => {
 		timeDisplay.textContent = formatTime(value);
 	}
 });
-
-console.log('timeFilter:', timeFilter); 
-console.log('timeDisplay:', timeDisplay); 
 
 map.on('load', async () => {
 
@@ -141,4 +145,23 @@ map.on('load', async () => {
 	map.on('resize', updatePositions);
 	map.on('moveend', updatePositions);
 
+    const timeSlider = document.getElementById('time-slider');
+    const selectedTime = document.getElementById('selected-time');
+    const anyTimeLabel = document.getElementById('any-time');
+
+    function updateTimeDisplay() {
+	    timeFilter = Number(timeSlider.value);
+
+	    if (timeFilter === -1) {
+		    selectedTime.textContent = '';
+		    anyTimeLabel.style.display = 'block';
+	    } 
+        else {
+		    selectedTime.textContent = formatTime(timeFilter);
+		    anyTimeLabel.style.display = 'none';
+	    }
+    }
+
+timeSlider.addEventListener('input', updateTimeDisplay);
+updateTimeDisplay();
 });
