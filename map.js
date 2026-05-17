@@ -20,22 +20,20 @@ function getCoords(station) {
 	return { cx: x, cy: y };
 }
 
-const timeFilter = document.getElementById('time-filter');
-const timeDisplay = document.getElementById('time-display');
+const timeFilter = document.querySelector('#time-filter');
+const timeDisplay = document.querySelector('#time-display');
+
+function formatTime(minutes) {
+	const date = new Date(0, 0, 0, 0, minutes);
+	return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+}
 
 timeFilter.addEventListener('input', () => {
 	const value = +timeFilter.value;
-
 	if (value === -1) {
 		timeDisplay.innerHTML = '<em>(any time)</em>';
 	} else {
-		const hours = Math.floor(value / 60);
-		const minutes = value % 60;
-		const date = new Date(0, 0, 0, hours, minutes);
-		timeDisplay.textContent = date.toLocaleTimeString('en-US', {
-			hour: '2-digit',
-			minute: '2-digit',
-		});
+		timeDisplay.textContent = formatTime(value);
 	}
 });
 
