@@ -1,4 +1,4 @@
-body {
+html, body {
 	margin: 0;
 	padding: 0;
 	display: flex;
@@ -7,15 +7,36 @@ body {
 	overflow: hidden;
 }
 
+header {
+	display: flex;
+	gap: 1em;
+	align-items: baseline;
+	padding: 0.5em 1em;
+	flex-shrink: 0;
+}
+
+header label {
+	margin-left: auto;
+}
+
+#time-display {
+	display: block;
+}
+
+#time-display em {
+	color: #888;
+	font-style: italic;
+}
+
 #map-container {
 	position: relative;
 	width: 100%;
-	flex: 1;  
+	flex: 1;
 }
 
 #map {
 	width: 100%;
-	height: 100%;  
+	height: 100%;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 	border-radius: 8px;
 }
@@ -26,8 +47,24 @@ body {
 	left: 0;
 	z-index: 1;
 	width: 100%;
-	height: 100%;  
+	height: 100%;
 	pointer-events: none;
+}
+
+circle,
+.legend > div {
+	--color-departures: steelblue;
+	--color-arrivals: darkorange;
+	--color: color-mix(
+		in oklch,
+		var(--color-departures) calc(100% * var(--departure-ratio)),
+		var(--color-arrivals)
+	);
+}
+
+circle {
+	pointer-events: auto;
+	fill: var(--color);
 }
 
 .legend {
@@ -37,4 +74,23 @@ body {
 	padding: 0 1em;
 	box-sizing: border-box;
 	margin-block: 0.5em;
+	flex-shrink: 0;
+}
+
+.legend > div {
+	flex: 1;
+	background-color: var(--color);
+	padding: 0.4em 1em;
+	text-align: center;
+	font-size: 0.85em;
+	color: white;
+	font-weight: bold;
+}
+
+.legend > div:first-child {
+	text-align: left;
+}
+
+.legend > div:last-child {
+	text-align: right;
 }
