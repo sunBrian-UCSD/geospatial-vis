@@ -39,6 +39,9 @@ timeFilter.addEventListener('input', () => {
 	}
 });
 
+console.log('timeFilter:', timeFilter); 
+console.log('timeDisplay:', timeDisplay); 
+
 map.on('load', async () => {
 
 	// Boston bike lanes
