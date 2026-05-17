@@ -1,5 +1,6 @@
 import mapboxgl from 'https://cdn.jsdelivr.net/npm/mapbox-gl@2.15.0/+esm';
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
+
 mapboxgl.accessToken = 'pk.eyJ1IjoiYnJzdW4iLCJhIjoiY21wOTV5aXU2MGVsNzJycHozc3lmMTY5eCJ9.dfPg3KyLFKfmjd0stuYBnA';
 
 const map = new mapboxgl.Map({
@@ -11,23 +12,27 @@ const map = new mapboxgl.Map({
   maxZoom: 18,
 });
 
+// ✅ defined globally
+const svg = d3.select('#map').select('svg');
+
+function getCoords(station) {
+  const point = new mapboxgl.LngLat(+station.lon, +station.lat);
+  const { x, y } = map.project(point);
+  return { cx: x, cy: y };
+}
+
 map.on('load', async () => {
-  
+
   // Boston bike lanes
   map.addSource('boston_route', {
     type: 'geojson',
     data: 'https://bostonopendata-boston.opendata.arcgis.com/datasets/boston::existing-bike-network-2022.geojson',
   });
-
   map.addLayer({
     id: 'bike-lanes',
     type: 'line',
     source: 'boston_route',
-    paint: {
-      'line-color': 'green',
-      'line-width': 3,
-      'line-opacity': 0.4,
-    },
+    paint: { 'line-color': 'green', 'line-width': 3, 'line-opacity': 0.4 },
   });
 
   // Cambridge bike lanes
@@ -35,26 +40,45 @@ map.on('load', async () => {
     type: 'geojson',
     data: 'https://raw.githubusercontent.com/cambridgegis/cambridgegis_data/main/Recreation/Bike_Facilities/RECREATION_BikeFacilities.geojson',
   });
-
   map.addLayer({
     id: 'cambridge-bike-lanes',
     type: 'line',
     source: 'cambridge_route',
-    paint: {
-      'line-color': 'green',
-      'line-width': 3,
-      'line-opacity': 0.4,
-    },
+    paint: { 'line-color': 'green', 'line-width': 3, 'line-opacity': 0.4 },
   });
 
-  // Fetch station data
-  let jsonData;
+  // ✅ fetch data correctly - no redeclaration inside try
+  let stations = [];
   try {
-    const jsonurl = 'https://dsc106.com/labs/lab07/data/bluebikes-stations.json';
-    const jsonData = await d3.json(jsonurl);
-    console.log('Loaded JSON Data:', jsonData);
+    stations = await d3.json('https://dsc106.com/labs/lab07/data/bluebikes-stations.json');
+    console.log('Loaded JSON Data:', stations);
   } catch (error) {
     console.error('Error loading JSON:', error);
   }
+
+  // Append circles
+  const circles = svg
+    .selectAll('circle')
+    .data(stations)
+    .enter()
+    .append('circle')
+    .attr('r', 5)
+    .attr('fill', 'steelblue')
+    .attr('stroke', 'white')
+    .attr('stroke-width', 1)
+    .attr('opacity', 0.8);
+
+  function updatePositions() {
+    circles
+      .attr('cx', (d) => getCoords(d).cx)
+      .attr('cy', (d) => getCoords(d).cy);
+  }
+
+  updatePositions();
+
+  map.on('move', updatePositions);
+  map.on('zoom', updatePositions);
+  map.on('resize', updatePositions);
+  map.on('moveend', updatePositions);
 
 });
