@@ -12,6 +12,10 @@ header {
 	padding: 0.5em 1em;
 }
 
+body {
+	padding: 0 1em;
+}
+
 header label {
 	margin-left: auto;
 }
