@@ -16,7 +16,7 @@ body {
   border-radius: 8px; /* Optional: rounded corners */
 }
 
-#map svg {
+#overlay {
   position: absolute;
   z-index: 1;
   width: 100%;
