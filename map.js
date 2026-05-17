@@ -188,5 +188,6 @@ map.on('load', async () => {
 
 	timeSlider.addEventListener('input', updateTimeDisplay);
 	updateTimeDisplay();
+    console.log('departure ratio sample:', stationFlow(stations[0].departures / stations[0].totalTraffic));
 
 });
