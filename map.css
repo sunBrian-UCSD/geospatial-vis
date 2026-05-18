@@ -49,14 +49,45 @@ header label {
 	pointer-events: none;
 }
 
-circle {
-	pointer-events: auto;
-    --color-departures: steelblue;
+circle,
+.legend > div {
+	--color-departures: steelblue;
 	--color-arrivals: darkorange;
 	--color: color-mix(
 		in oklch,
 		var(--color-departures) calc(100% * var(--departure-ratio)),
 		var(--color-arrivals)
 	);
+}
+
+circle {
+	pointer-events: auto;
 	fill: var(--color);
+}
+
+.legend {
+	display: flex;
+	gap: 1px;
+	margin-block: 1em;
+	margin-inline: 1em;
+}
+
+.legend > div {
+	flex: 1;
+	background-color: var(--color);
+	padding: 0.4em 1.2em;
+	color: white;
+	font-size: 0.85em;
+	font-weight: 500;
+	text-align: center;
+}
+
+.legend > div:first-child {
+	text-align: left;
+	border-radius: 4px 0 0 4px;
+}
+
+.legend > div:last-child {
+	text-align: right;
+	border-radius: 0 4px 4px 0;
 }
