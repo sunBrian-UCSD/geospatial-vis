@@ -40,7 +40,6 @@ header label {
 
 #map-container {
 	position: relative;
-	width: 100%;
 	flex: 1;
 	min-height: 0;
     margin-top: 0.5em;
