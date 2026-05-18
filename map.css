@@ -18,7 +18,12 @@ header {
 	display: flex;
 	gap: 1em;
 	align-items: baseline;
-	padding: 0.5em 1em;
+
+	width: 80%;
+	max-width: 1200px;
+	margin: 0 auto;
+
+	padding: 0.5em 0;
 }
 
 header label {
@@ -38,7 +43,10 @@ header label {
 	position: relative;
 	flex: 1;
 	min-height: 0;
-    margin-top: 0.5em;
+
+	margin: 0.5em auto 0 auto; /* centers horizontally */
+	width: 80%;                /* or whatever width you want */
+	max-width: 1200px;         /* prevents over-expansion */
 }
 
 #map {
@@ -77,8 +85,10 @@ circle {
 .legend {
 	display: flex;
 	gap: 1px;
-	margin-block: 1em;
-	margin-inline: 1em;
+
+	width: 80%;
+	max-width: 1200px;
+	margin: 1em auto;
 }
 
 .legend > div {
