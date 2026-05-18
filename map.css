@@ -8,6 +8,11 @@ html, body {
 body {
 	display: flex;
 	flex-direction: column;
+	align-items: center;
+}
+
+body > * {
+	width: min(100%, 1400px);
 }
 
 header {
@@ -47,8 +52,8 @@ header label {
 
 #overlay {
 	position: absolute;
-	top: 0;		/* 👈 added */
-	left: 0;	/* 👈 added */
+	top: 0;		
+	left: 0;
 	z-index: 1;
 	width: 100%;
 	height: 100%;
