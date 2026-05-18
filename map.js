@@ -132,7 +132,7 @@ map.on('load', async () => {
 		.attr('stroke', 'white')
 		.attr('stroke-width', 1)
 		.attr('opacity', 0.8)
-        .attr('style', (d) => `--departure-ratio: ${stationFlow(d.departures / d.totalTraffic)}`)
+        .style('--departure-ratio', (d) => stationFlow(d.departures / d.totalTraffic))
 		.each(function (d) {
 			d3.select(this)
 				.append('title')
@@ -164,7 +164,7 @@ map.on('load', async () => {
 			.data(filteredStations, (d) => d.short_name)
 			.join('circle')
 			.attr('r', (d) => radiusScale(d.totalTraffic))
-            .attr('style', (d) => `--departure-ratio: ${stationFlow(d.departures / d.totalTraffic)}`);
+            .style('--departure-ratio', (d) => stationFlow(d.departures / d.totalTraffic));
 	}
 
 	// Slider elements
@@ -188,6 +188,5 @@ map.on('load', async () => {
 
 	timeSlider.addEventListener('input', updateTimeDisplay);
 	updateTimeDisplay();
-    console.log('departure ratio sample:', stationFlow(stations[0].departures / stations[0].totalTraffic));
 
 });
