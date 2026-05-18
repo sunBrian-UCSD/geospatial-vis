@@ -13,11 +13,6 @@ body {
 	flex-direction: column;
 }
 
-body > * {
-	width: min(100%, 1400px);
-	margin-inline: auto;
-}
-
 header {
 	display: flex;
 	gap: 1em;
