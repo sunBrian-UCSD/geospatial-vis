@@ -20,7 +20,6 @@ header {
 	align-items: baseline;
 
 	width: 100%;
-	max-width: 1400px;
 	margin: 0 auto;
 
 	padding: 0.5em 0;
@@ -45,8 +44,7 @@ header label {
 	min-height: 0;
 
 	margin: 0.5em auto 0 auto; 
-	width: 100%;                
-	max-width: 1400px;        
+	width: 100%;                     
 }
 
 #map {
@@ -87,7 +85,6 @@ circle {
 	gap: 1px;
 
 	width: 100%;
-	max-width: 1400px;
 	margin: 1em auto;
 }
 
